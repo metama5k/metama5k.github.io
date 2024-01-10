@@ -1,53 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Moralis Web3.js Example</title>
-    <!-- Include Moralis SDK -->
-    <script src="https://unpkg.com/moralis@0.0.92/dist/moralis.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Import Custom Token to MetaMask</title>
 </head>
 <body>
-    <h1>Moralis Web3.js Example</h1>
+  <h1>Import Custom Token to MetaMask</h1>
+  <button id="importToken">Import Token</button>
 
-    <script>
-        // Initialize Moralis with your Application ID and Server URL
-        Moralis.initialize("1c59be09-9340-47fa-8833-f56061099728");
-       // Moralis.serverUrl = "https://metama5k.github.io/";
-
-        async function switchNetworkAndAddToken() {
-            // Check if the user is authenticated
-            const user = Moralis.User.current();
-            if (!user) {
-                console.log("User not authenticated");
-                return;
-            }
-
-            // Prompt the user to switch the network
-            try {
-                await Moralis.Web3.enable();
-                const currentNetwork = await Moralis.Web3.getChainId();
-                console.log("Current Network ID:", currentNetwork);
-
-                // Switch to the desired network (e.g., BSC Testnet, Chain ID: 97)
-                await Moralis.Web3.switchNetwork(97);
-                const newNetwork = await Moralis.Web3.getChainId();
-                console.log("New Network ID:", newNetwork);
-
-                // Add a custom token (e.g., Binance Smart Chain Testnet BUSD)
-                const customTokenAddress = "0x8301f2213c0eed49a7e28ae4c3e91722919b8b47";
-                const customTokenSymbol = "BUSD";
-                const customTokenDecimals = 18;
-
-                await Moralis.Web3.addToken(customTokenAddress, customTokenSymbol, customTokenDecimals);
-                console.log("Custom token added:", customTokenSymbol);
-            } catch (error) {
-                console.error("Error switching network or adding token:", error);
-            }
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('importToken').addEventListener('click', async () => {
+        try {
+          await ethereum.request({
+            method: 'wallet_watchAsset',
+            params: {
+              type: 'ERC20',
+              options: {
+                address: '0xeE2f9CafB96F8f63235bA4DEFB37885E66a0a844',  // Replace with the actual token address
+                symbol: 'USDT',                   // Replace with the token symbol
+                decimals: 18                     // Replace with the number of decimal places
+              },
+            },
+          });
+          console.log('Token added to MetaMask');
+        } catch (error) {
+          console.error('Error importing token:', error);
         }
-
-        // Call the function when the page is loaded
-        switchNetworkAndAddToken();
-    </script>
+      });
+    });
+  </script>
 </body>
 </html>
