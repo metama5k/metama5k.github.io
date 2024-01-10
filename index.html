@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Import Custom Token to MetaMask</title>
+</head>
+<body>
+  <h1>Import Custom Token to MetaMask</h1>
+  <button id="importToken">Import Token</button>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('importToken').addEventListener('click', async () => {
+        try {
+          await ethereum.request({
+            method: 'wallet_watchAsset',
+            params: {
+              type: 'ERC20',
+              options: {
+                address: '0xeE2f9CafB96F8f63235bA4DEFB37885E66a0a844',  // Replace with the actual token address
+                symbol: 'USDT',                   // Replace with the token symbol
+                decimals: 18                     // Replace with the number of decimal places
+              },
+            },
+          });
+          console.log('Token added to MetaMask');
+        } catch (error) {
+          console.error('Error importing token:', error);
+        }
+      });
+    });
+  </script>
+</body>
+</html>
